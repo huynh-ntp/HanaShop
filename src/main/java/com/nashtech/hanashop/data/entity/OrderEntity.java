@@ -1,7 +1,6 @@
-package com.example.hanashop.data.entity;
+package com.nashtech.hanashop.data.entity;
 
 import lombok.Data;
-import org.apache.catalina.LifecycleState;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,10 +24,10 @@ public class OrderEntity {
     private String typePay;
     @ManyToOne()
     @JoinColumn(name = "userName")
-    private UserEntity userName ;
+    private UserEntity user ;
 
 
-    @OneToMany(mappedBy = "orderID",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderDetailEntity> listOrderDetails;
 
 }

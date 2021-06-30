@@ -1,4 +1,4 @@
-package com.example.hanashop.data.dto;
+package com.nashtech.hanashop.data.dto;
 
 import lombok.Data;
 
@@ -14,6 +14,7 @@ public class ProductDTO {
     private Boolean status;
     private Date createDate;
     private Date updateDate;
+    private String categoryID;
 
 
 }

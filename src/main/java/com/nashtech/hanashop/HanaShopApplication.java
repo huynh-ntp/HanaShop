@@ -1,4 +1,4 @@
-package com.example.hanashop;
+package com.nashtech.hanashop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

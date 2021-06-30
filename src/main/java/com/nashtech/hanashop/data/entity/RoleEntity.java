@@ -1,4 +1,4 @@
-package com.example.hanashop.data.entity;
+package com.nashtech.hanashop.data.entity;
 
 import lombok.Data;
 
@@ -13,6 +13,7 @@ public class RoleEntity {
     private String roleID;
     @Column(name = "roleName",nullable = false)
     private String roleName;
-    @OneToMany(mappedBy = "roleID",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
     private List<UserEntity> users ;
 }

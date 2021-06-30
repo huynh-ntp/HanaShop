@@ -1,4 +1,4 @@
-package com.example.hanashop.data.dto;
+package com.nashtech.hanashop.data.dto;
 
 import lombok.Data;
 

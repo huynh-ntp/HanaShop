@@ -1,4 +1,4 @@
-package com.example.hanashop.data.entity;
+package com.nashtech.hanashop.data.entity;
 
 import lombok.Data;
 
@@ -38,13 +38,14 @@ public class ProductEntity {
     @Column(name = "updateDate")
     private Date updateDate;
 
+
     @ManyToOne
     @JoinColumn(name = "categoryID")
-    private CategoryEntity categoryID;
+    private CategoryEntity category;
 
-    @OneToMany(mappedBy = "productID",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<OrderDetailEntity> listOrderDetails;
 
-    @OneToMany(mappedBy = "productID",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<RateEntity> listOfRates;
 }

@@ -1,4 +1,4 @@
-package com.example.hanashop.data.entity;
+package com.nashtech.hanashop.data.entity;
 
 import lombok.Data;
 
@@ -12,17 +12,20 @@ public class OrderDetailEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String detailID;
 
-    @ManyToOne
-    @JoinColumn(name = "orderID")
-    private OrderEntity orderID;
-
-    @ManyToOne
-    @JoinColumn(name = "productID")
-    private ProductEntity productID;
 
     @Column(name = "price")
     private Float price;
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "orderID")
+    private OrderEntity order;
+
+    @ManyToOne
+    @JoinColumn(name = "productID")
+    private ProductEntity product;
+
+
 }

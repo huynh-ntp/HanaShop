@@ -1,4 +1,4 @@
-package com.example.hanashop.data.entity;
+package com.nashtech.hanashop.data.entity;
 
 import lombok.Data;
 
@@ -12,12 +12,13 @@ public class RateEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String rateID;
 
-    @Column(name = "userName")
-    private String userName;
+    @ManyToOne
+    @JoinColumn(name = "userName")
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "productID")
-    private ProductEntity productID;
+    private ProductEntity product;
 
     @Column(name = "numOfStar")
     private Integer numOfStar;
@@ -27,4 +28,6 @@ public class RateEntity {
 
     @Column(name = "dateRate")
     private Date dateRate;
+
+
 }

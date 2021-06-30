@@ -1,4 +1,4 @@
-package com.example.hanashop.data.entity;
+package com.nashtech.hanashop.data.entity;
 
 import lombok.Data;
 
@@ -14,6 +14,7 @@ public class CategoryEntity {
     @Column(name = "categoryName")
     private String categoryName;
 
-    @OneToMany(mappedBy = "categoryID",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private List<ProductEntity> listOfProducts;
+
 }

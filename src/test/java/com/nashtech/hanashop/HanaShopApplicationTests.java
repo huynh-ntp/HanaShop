@@ -1,4 +1,4 @@
-package com.example.hanashop;
+package com.nashtech.hanashop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
