@@ -30,8 +30,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO dto){
-
-
         dto.setProductID(randomProductID(dto));
         Date date = new Date();
         dto.setCreateDate(date);
