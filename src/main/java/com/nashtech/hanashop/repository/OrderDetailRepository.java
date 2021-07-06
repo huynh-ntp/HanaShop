@@ -9,3 +9,4 @@ import java.util.List;
 public interface OrderDetailRepository extends JpaRepository<OrderDetailEntity,Long> {
     List<OrderDetailEntity> findByOrder(OrderEntity order);
 }
+
