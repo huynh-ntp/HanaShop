@@ -44,7 +44,6 @@ public class UserDetailsImpl implements UserDetails {
 
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleID()));
 
-        System.out.println(authorities);
         return new UserDetailsImpl(
             user.getUserName(),
             user.getEmail(),

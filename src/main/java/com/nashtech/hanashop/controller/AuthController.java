@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +54,12 @@ public class AuthController {
 //        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
         // on this step, we tell to authenticationManager how we load data from database
         // and the password encoder
+
+        if(user.getUserName()==null || user.getUserName().trim().isEmpty()
+                || user.getPassword()==null
+                || user.getPassword().trim().isEmpty()
+        ) return ResponseEntity.badRequest().body("Error: Username and password must be fill");
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
 
@@ -68,10 +73,6 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
-//        List<String> role2 = new ArrayList<>();
-
-
 
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
@@ -90,7 +91,13 @@ public class AuthController {
                     .badRequest()
                     .body("Error: Username is already taken!");
         }
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String validStatus = validData(userDTO);
+        if(!validStatus.equals("Valid")){
+            return ResponseEntity
+                    .badRequest()
+                    .body(validStatus);
+        }
+
         UserDTO user = new UserDTO();
         user.setUserName(userDTO.getUserName());
         user.setEmail(userDTO.getEmail());
@@ -100,6 +107,28 @@ public class AuthController {
         user.setStatus(true);
 
         userRepository.save(UserMapper.parseDTOToEntity(user));
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(user);
+    }
+
+    private String validData(UserDTO dto){
+        if(dto.getUserName()==null || dto.getUserName().trim().isEmpty()){
+            return "Error: Username is not empty";
+        }
+        if(dto.getPassword()==null || dto.getPassword().trim().isEmpty()){
+            return "Error: Password it not empty";
+        }
+        if(dto.getPassword().length()<=6){
+            return "Error: Password is too weak";
+        }
+        if(dto.getFullName() == null || dto.getFullName().trim().isEmpty()){
+            return "Error: Full name is not empty";
+        }
+        if(dto.getEmail()==null || dto.getEmail().trim().isEmpty()){
+            return "Error: Email is not empty";
+        }
+        if(!dto.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+            return "Error: Invalid email address";
+        }
+        return "Valid";
     }
 }

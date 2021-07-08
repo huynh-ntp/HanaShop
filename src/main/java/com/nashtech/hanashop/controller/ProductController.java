@@ -48,7 +48,7 @@ public class ProductController {
     public ResponseEntity createProduct(@RequestBody ProductDTO dto){
         String validStatus = validData(dto,"create");
         if(!validStatus.equals("Valid")){
-            return ResponseEntity.ok(validStatus);
+            return ResponseEntity.badRequest().body(validStatus);
         }
         ProductDTO product = productService.createProduct(dto);
         return ResponseEntity.ok(product);
@@ -67,7 +67,7 @@ public class ProductController {
     public ResponseEntity updateProduct(@RequestBody ProductDTO dto){
         String validStatus = validData(dto,"update");
         if(!validStatus.equals("Valid")){
-            return ResponseEntity.ok(validStatus);
+            return ResponseEntity.badRequest().body(validStatus);
         }
         ProductDTO newProduct = productService.updateProduct(dto);
         return ResponseEntity.ok(newProduct);
@@ -106,7 +106,6 @@ public class ProductController {
             return "Category not blank";
         }
         return "Valid";
-
 
     }
 }
