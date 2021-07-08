@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,5 +32,13 @@ public class RateServiceImpl implements RateService {
         }
         return listDTO;
 
+    }
+
+    @Override
+    public String rating(RateDTO dto) {
+        Date date = new Date();
+        dto.setDateRate(date);
+        rateRepo.save(RateMapper.parseDTOToEntity(dto));
+        return "Success";
     }
 }

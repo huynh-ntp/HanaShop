@@ -1,7 +1,9 @@
 package com.nashtech.hanashop.service.Impl;
 
+import com.nashtech.hanashop.data.dto.CategoryDTO;
 import com.nashtech.hanashop.data.dto.ProductDTO;
 import com.nashtech.hanashop.data.entity.ProductEntity;
+import com.nashtech.hanashop.data.mapper.CategoryMapper;
 import com.nashtech.hanashop.data.mapper.ProductMapper;
 import com.nashtech.hanashop.repository.ProductRepository;
 import com.nashtech.hanashop.service.ProductService;
@@ -57,6 +59,33 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity entity = ProductMapper.parseDTOToEntity(dto);
         ProductEntity newEntity = productRepo.save(entity);
         return ProductMapper.parseEntityToDTO(newEntity);
+
+    }
+
+    @Override
+    public List<ProductDTO> findByName(String productName) {
+        List<ProductEntity> listEntity = productRepo.findByProductNameContains(productName);
+        List<ProductDTO> listDto = new ArrayList<>();
+        if(listEntity!=null){
+            listEntity.forEach(entity -> {
+                listDto.add(ProductMapper.parseEntityToDTO(entity));
+            });
+        }
+        return listDto;
+    }
+
+    @Override
+    public List<ProductDTO> findByCategory(String categoryID) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setCategoryID(categoryID);
+        List<ProductEntity> listEntity = productRepo.findByCategory(CategoryMapper.parseDTOToEntity(categoryDTO));
+        List<ProductDTO> listDto = new ArrayList<>();
+        if(listEntity!=null){
+            listEntity.forEach(entity -> {
+                listDto.add(ProductMapper.parseEntityToDTO(entity));
+            });
+        }
+        return listDto;
     }
 
 

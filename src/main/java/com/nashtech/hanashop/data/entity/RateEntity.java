@@ -9,8 +9,8 @@ import java.util.Date;
 @Table(name = "tblRates")
 public class RateEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String rateID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long rateID;
 
     @ManyToOne
     @JoinColumn(name = "userName")

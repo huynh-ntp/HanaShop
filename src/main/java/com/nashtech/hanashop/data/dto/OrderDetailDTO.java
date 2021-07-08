@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OrderDetailDTO {
-    private String detailID;
+    private Long detailID;
     private String orderID;
     private String productID;
     private Float price;

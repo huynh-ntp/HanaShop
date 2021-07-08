@@ -1,5 +1,6 @@
 package com.nashtech.hanashop.service;
 
+import com.nashtech.hanashop.data.dto.CategoryDTO;
 import com.nashtech.hanashop.data.dto.ProductDTO;
 
 
@@ -10,5 +11,6 @@ public interface ProductService {
     ProductDTO createProduct(ProductDTO dto);
     String deleteProduct(String productID);
     ProductDTO updateProduct(ProductDTO dto);
-
+    List<ProductDTO> findByName(String productName);
+    List<ProductDTO> findByCategory(String categoryID);
 }

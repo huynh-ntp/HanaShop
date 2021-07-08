@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "tblOrderDetails")
 public class OrderDetailEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String detailID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long detailID;
 
 
     @Column(name = "price")

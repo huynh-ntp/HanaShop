@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RateService {
     List<RateDTO> findByProductID (String productID);
+    String rating(RateDTO dto);
 }

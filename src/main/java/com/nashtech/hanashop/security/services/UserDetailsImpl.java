@@ -39,10 +39,12 @@ public class UserDetailsImpl implements UserDetails {
 //            .map(role -> new SimpleGrantedAuthority(role.getName().name()))
 //            .collect(Collectors.toList());
 
+
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRoleID()));
 
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleID()));
 
+        System.out.println(authorities);
         return new UserDetailsImpl(
             user.getUserName(),
             user.getEmail(),
@@ -54,6 +56,7 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
+
 
 
     public String getEmail() {
