@@ -13,4 +13,5 @@ public interface ProductService {
     ProductDTO updateProduct(ProductDTO dto);
     List<ProductDTO> findByName(String productName);
     List<ProductDTO> findByCategory(String categoryID);
+    ProductDTO findByProductID(String productID);
 }

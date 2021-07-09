@@ -24,6 +24,7 @@ public class OrderDetailMapper {
         order.setOrderID(dto.getOrderID());
         ProductEntity product = new ProductEntity();
         product.setProductID(dto.getProductID());
+        entity.setOrder(order);
         entity.setProduct(product);
         entity.setPrice(dto.getPrice());
         entity.setQuantity(dto.getQuantity());

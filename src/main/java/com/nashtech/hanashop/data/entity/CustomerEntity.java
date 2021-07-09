@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "tblCustomers")
 public class CustomerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String customerID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerID;
     @OneToOne
     @JoinColumn(name = "userName")
     private UserEntity user;

@@ -88,6 +88,13 @@ public class ProductServiceImpl implements ProductService {
         return listDto;
     }
 
+    @Override
+    public ProductDTO findByProductID(String productID) {
+        ProductDTO product = ProductMapper.parseEntityToDTO(
+                productRepo.findByProductID(productID));
+        return product;
+    }
+
 
     private String randomProductID(ProductDTO dto){
         Random random = new Random();
@@ -101,6 +108,8 @@ public class ProductServiceImpl implements ProductService {
         }
         return productID;
     }
+
+
 
 
 }

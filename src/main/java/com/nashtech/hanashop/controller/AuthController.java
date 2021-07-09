@@ -80,8 +80,6 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles
         ));
-        
-
     }
 
     @PostMapping("/signup")
@@ -102,7 +100,7 @@ public class AuthController {
         user.setUserName(userDTO.getUserName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(encoder.encode(userDTO.getPassword()));
-        user.setRoleID("CUS");
+        user.setRoleID("AD");
         user.setFullName(userDTO.getFullName());
         user.setStatus(true);
 

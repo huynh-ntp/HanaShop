@@ -19,7 +19,7 @@ public class OrderMapper {
         return dto;
     }
 
-    public static OrderEntity parseEntityToDTO(OrderDTO dto){
+    public static OrderEntity parseDTOToEntity(OrderDTO dto){
         OrderEntity entity = new OrderEntity();
         entity.setOrderID(dto.getOrderID());
         entity.setTotalPrice(dto.getTotalPrice());
