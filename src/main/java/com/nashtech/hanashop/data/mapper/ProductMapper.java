@@ -10,7 +10,7 @@ public class ProductMapper {
         dto.setProductID(entity.getProductID());
         dto.setProductName(entity.getProductName());
         dto.setImageSrc(entity.getImageSrc());
-        dto.setDesscription(entity.getDesscription());
+        dto.setDescription(entity.getDesscription());
         dto.setPrice(entity.getPrice());
         dto.setQuantity(entity.getQuantity());
         dto.setStatus(entity.getStatus());
@@ -25,7 +25,7 @@ public class ProductMapper {
         entity.setProductID(dto.getProductID());
         entity.setProductName(dto.getProductName());
         entity.setImageSrc(dto.getImageSrc());
-        entity.setDesscription(dto.getDesscription());
+        entity.setDesscription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setQuantity(dto.getQuantity());
         entity.setStatus(dto.getStatus());

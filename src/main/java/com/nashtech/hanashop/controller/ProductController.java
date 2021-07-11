@@ -1,7 +1,7 @@
 package com.nashtech.hanashop.controller;
 
+import com.nashtech.hanashop.data.dto.ErrorProductDTO;
 import com.nashtech.hanashop.data.dto.ProductDTO;
-import com.nashtech.hanashop.data.entity.ProductEntity;
 import com.nashtech.hanashop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,9 +46,11 @@ public class ProductController {
     @PostMapping()
     @PreAuthorize("hasRole('AD')")
     public ResponseEntity createProduct(@RequestBody ProductDTO dto){
-        String validStatus = validData(dto,"create");
-        if(!validStatus.equals("Valid")){
-            return ResponseEntity.badRequest().body(validStatus);
+        ErrorProductDTO error = validData(dto,"create");
+        if(checkError(error)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(error);
         }
         ProductDTO product = productService.createProduct(dto);
         return ResponseEntity.ok(product);
@@ -65,47 +67,60 @@ public class ProductController {
     @PutMapping()
     @PreAuthorize("hasRole('AD')")
     public ResponseEntity updateProduct(@RequestBody ProductDTO dto){
-        String validStatus = validData(dto,"update");
-        if(!validStatus.equals("Valid")){
-            return ResponseEntity.badRequest().body(validStatus);
+        ErrorProductDTO error = validData(dto,"update");
+        if(checkError(error)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(error);
         }
         ProductDTO newProduct = productService.updateProduct(dto);
         return ResponseEntity.ok(newProduct);
     }
 
-    public String validData(ProductDTO dto,String status){
+    private boolean checkError (ErrorProductDTO error){
+        if(!error.getProductIDError().isEmpty() || !error.getProductNameError().isEmpty()
+                || !error.getPriceError().isEmpty() || !error.getDescriptionError().isEmpty()
+                || !error.getQuantityError().isEmpty() || !error.getImageSrcError().isEmpty()
+                || !error.getCategoryIDError().isEmpty()){
+            return true;
+        }
+        return  false;
+    }
+
+    private ErrorProductDTO validData(ProductDTO dto,String status){
+        ErrorProductDTO error = new ErrorProductDTO("","","",
+                "","","","");
         if(status.equals("update")){
             if(dto.getProductID()==null || dto.getProductID().trim().isEmpty()){
-                return "ProductID not blank";
+                error.setProductIDError("ProductID is not blank");
             }
         }
         if(dto.getProductName()==null || dto.getProductName().trim().isEmpty()){
-            return "Product not blank";
+            error.setProductNameError("Product is not blank");
+
         }
         if(dto.getImageSrc()==null || dto.getImageSrc().trim().isEmpty()){
-            return "Image not blank";
+            error.setImageSrcError("Image is not blank");
+
         }
-        if(dto.getDesscription()==null || dto.getDesscription().trim().isEmpty()){
-            return "Description not blank";
+        if(dto.getDescription()==null || dto.getDescription().trim().isEmpty()){
+            error.setDescriptionError("Description is not blank");
         }
         if(dto.getPrice()==null){
-            return "Price not blank";
+            error.setPriceError("Price is not blank");
+        }else if (dto.getPrice()<=0){
+            error.setPriceError("Price must be greater than 0");
         }
-        if(dto.getPrice()<=0){
-            return "Price must be greater than 0";
-        }
-
         if(dto.getQuantity()==null){
-            return "Price not blank";
-        }
-        if(dto.getQuantity()<=0){
-            return "Quantity must be greater than 0";
-        }
+            error.setQuantityError("Quantity is  not blank");
 
-        if(dto.getCategoryID()==null || dto.getCategoryID().trim().isEmpty()){
-            return "Category not blank";
+        } else if(dto.getQuantity()<=0){
+            error.setQuantityError("Quantity must be greater than 0");
         }
-        return "Valid";
+        if(dto.getCategoryID()==null || dto.getCategoryID().trim().isEmpty()){
+            error.setCategoryIDError("Category not blank");
+        }
+        return error;
 
     }
 }

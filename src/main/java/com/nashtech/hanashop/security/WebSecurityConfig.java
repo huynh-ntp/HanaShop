@@ -46,8 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        // TODO
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
+
     }
 
     @Bean
@@ -61,6 +62,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/v2/api-docs", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html",
+            "/webjars/**" };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -68,10 +74,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers("/account/**").permitAll()
             .antMatchers("/user/**").permitAll()
-//                .antMatchers("/rate/user").hasRole("CUS")
                 .antMatchers("/product/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
+
 }

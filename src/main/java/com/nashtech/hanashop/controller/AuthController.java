@@ -1,5 +1,6 @@
 package com.nashtech.hanashop.controller;
 
+import com.nashtech.hanashop.data.dto.ErrorRegisterDTO;
 import com.nashtech.hanashop.data.dto.UserDTO;
 import com.nashtech.hanashop.data.mapper.UserMapper;
 import com.nashtech.hanashop.payload.response.JwtResponse;
@@ -84,23 +85,26 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        if (userRepository.existsByUserName(userDTO.getUserName())) {
+        ErrorRegisterDTO error = validData(userDTO);
+        if(!error.getUserNameError().isEmpty() || !error.getPasswordError().isEmpty()
+                    || !error.getFullNameError().isEmpty()
+                    || !error.getEmailError().isEmpty()){
             return ResponseEntity
                     .badRequest()
-                    .body("Error: Username is already taken!");
-        }
-        String validStatus = validData(userDTO);
-        if(!validStatus.equals("Valid")){
-            return ResponseEntity
-                    .badRequest()
-                    .body(validStatus);
+                    .body(error);
         }
 
+        if (userRepository.existsByUserName(userDTO.getUserName())) {
+            error.setUserNameError("Error: Username is already taken!");
+            return ResponseEntity
+                    .badRequest()
+                    .body(error);
+        }
         UserDTO user = new UserDTO();
         user.setUserName(userDTO.getUserName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(encoder.encode(userDTO.getPassword()));
-        user.setRoleID("AD");
+        user.setRoleID("CUS");
         user.setFullName(userDTO.getFullName());
         user.setStatus(true);
 
@@ -108,25 +112,27 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    private String validData(UserDTO dto){
+    private ErrorRegisterDTO validData(UserDTO dto){
+        ErrorRegisterDTO error = new ErrorRegisterDTO("","","","");
         if(dto.getUserName()==null || dto.getUserName().trim().isEmpty()){
-            return "Error: Username is not empty";
+            error.setUserNameError("Error: Username is not empty");
         }
         if(dto.getPassword()==null || dto.getPassword().trim().isEmpty()){
-            return "Error: Password it not empty";
+            error.setPasswordError("Error: Password it not empty");
         }
         if(dto.getPassword().length()<=6){
-            return "Error: Password is too weak";
+            error.setPasswordError("Error: Password is too weak, at least 7 letter");
+
         }
         if(dto.getFullName() == null || dto.getFullName().trim().isEmpty()){
-            return "Error: Full name is not empty";
+            error.setFullNameError("Error: Full name is not empty");
         }
         if(dto.getEmail()==null || dto.getEmail().trim().isEmpty()){
-            return "Error: Email is not empty";
+            error.setEmailError("Error: Email is not empty");
         }
         if(!dto.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")){
-            return "Error: Invalid email address";
+            error.setEmailError("Error: Invalid email address");
         }
-        return "Valid";
+        return error;
     }
 }
