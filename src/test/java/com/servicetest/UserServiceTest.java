@@ -51,7 +51,7 @@ public class UserServiceTest {
         Assertions.assertEquals("Delete failed, username not found!",
                 userService.deleteUser(Mockito.anyString()));
     }
-
+    
     @Test
     public void updateUser_ReturnUserDTO(){
         Mockito.when(userRepository.save(Mockito.anyObject())).thenReturn(entity);
