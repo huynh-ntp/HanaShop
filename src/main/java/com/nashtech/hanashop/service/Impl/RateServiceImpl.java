@@ -31,14 +31,13 @@ public class RateServiceImpl implements RateService {
             });
         }
         return listDTO;
-
     }
 
     @Override
-    public String rating(RateDTO dto) {
+    public RateDTO rating(RateDTO dto) {
         Date date = new Date();
         dto.setDateRate(date);
-        rateRepo.save(RateMapper.parseDTOToEntity(dto));
-        return "Success";
+        RateEntity entity = rateRepo.save(RateMapper.parseDTOToEntity(dto));
+        return RateMapper.parseEntityToDTO(entity);
     }
 }

@@ -30,8 +30,8 @@ public class RateController  {
     @PostMapping("/user/rating")
     @PreAuthorize("hasRole('CUS')")
     public ResponseEntity<?> rating(@RequestBody RateDTO rateDTO) {
-        String status = rateService.rating(rateDTO);
-        return ResponseEntity.ok(status);
+        RateDTO dto = rateService.rating(rateDTO);
+        return ResponseEntity.ok(dto);
     }
 
 }

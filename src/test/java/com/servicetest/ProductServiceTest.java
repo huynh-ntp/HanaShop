@@ -118,7 +118,6 @@ public class ProductServiceTest {
         CategoryEntity cate = new CategoryEntity();
         entity.setCategory(cate);
         Mockito.when(productRepo.findByProductID(Mockito.anyString())).thenReturn(null);
-
         Assertions.assertEquals("Delete product failed, product not found",productService.deleteProduct(Mockito.anyString()));
     }
 
