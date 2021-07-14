@@ -19,6 +19,5 @@ public class CategoryController {
         List<CategoryDTO> listCategory = categoryService.getAll();
         return ResponseEntity.ok(listCategory);
     }
-    
 
 }

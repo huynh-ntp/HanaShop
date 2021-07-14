@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
             userRepo.delete(entity);
             return "Delete success";
         }
-        return "Delete failed";
+        return "Delete failed, username not found!";
     }
 
     @Override
@@ -47,6 +47,6 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
-    
+
 
 }
