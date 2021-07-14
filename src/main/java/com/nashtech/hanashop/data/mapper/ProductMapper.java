@@ -5,7 +5,7 @@ import com.nashtech.hanashop.data.entity.CategoryEntity;
 import com.nashtech.hanashop.data.entity.ProductEntity;
 
 public class ProductMapper {
-    public static ProductDTO parseEntityToDTO(ProductEntity entity){
+    public  ProductDTO parseEntityToDTO(ProductEntity entity){
         ProductDTO dto = new ProductDTO();
         dto.setProductID(entity.getProductID());
         dto.setProductName(entity.getProductName());
@@ -20,7 +20,7 @@ public class ProductMapper {
         return dto;
     }
 
-    public static ProductEntity parseDTOToEntity(ProductDTO dto){
+    public  ProductEntity parseDTOToEntity(ProductDTO dto){
         ProductEntity entity = new ProductEntity();
         entity.setProductID(dto.getProductID());
         entity.setProductName(dto.getProductName());

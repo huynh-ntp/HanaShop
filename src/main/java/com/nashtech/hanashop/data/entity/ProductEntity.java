@@ -48,4 +48,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<RateEntity> listOfRates;
+
+
+
 }

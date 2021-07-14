@@ -22,11 +22,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepo;
 
+    private final ProductMapper mapper = new ProductMapper();
+
     public List<ProductDTO> getAll(){
         List<ProductDTO> listProduct = new ArrayList<>();
         List<ProductEntity> listEntity = productRepo.findAll();
         listEntity.forEach(entity -> {
-            listProduct.add(ProductMapper.parseEntityToDTO(entity));
+            listProduct.add(mapper.parseEntityToDTO(entity));
         });
         return listProduct;
     }
@@ -38,9 +40,10 @@ public class ProductServiceImpl implements ProductService {
         dto.setStatus(true);
         dto.setUpdateDate(null);
 
-        ProductEntity productEntity = ProductMapper.parseDTOToEntity(dto);
+        ProductEntity productEntity = mapper.parseDTOToEntity(dto);
         ProductEntity productEntityNew = productRepo.save(productEntity);
-        return ProductMapper.parseEntityToDTO(productEntityNew);
+        return mapper.parseEntityToDTO(productEntityNew);
+
     }
 
     public String deleteProduct(String productID){
@@ -51,15 +54,14 @@ public class ProductServiceImpl implements ProductService {
             productRepo.save(entity);
             return "Delete product success";
         }
-        return "Delete product failed";
+        return "Delete product failed, product not found";
     }
     public ProductDTO updateProduct(ProductDTO dto){
         Date date = new Date();
         dto.setUpdateDate(date);
-        ProductEntity entity = ProductMapper.parseDTOToEntity(dto);
+        ProductEntity entity = mapper.parseDTOToEntity(dto);
         ProductEntity newEntity = productRepo.save(entity);
-        return ProductMapper.parseEntityToDTO(newEntity);
-
+        return mapper.parseEntityToDTO(newEntity);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDTO> listDto = new ArrayList<>();
         if(listEntity!=null){
             listEntity.forEach(entity -> {
-                listDto.add(ProductMapper.parseEntityToDTO(entity));
+                listDto.add(mapper.parseEntityToDTO(entity));
             });
         }
         return listDto;
@@ -82,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDTO> listDto = new ArrayList<>();
         if(listEntity!=null){
             listEntity.forEach(entity -> {
-                listDto.add(ProductMapper.parseEntityToDTO(entity));
+                listDto.add(mapper.parseEntityToDTO(entity));
             });
         }
         return listDto;
@@ -90,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO findByProductID(String productID) {
-        ProductDTO product = ProductMapper.parseEntityToDTO(
+        ProductDTO product = mapper.parseEntityToDTO(
                 productRepo.findByProductID(productID));
         return product;
     }
@@ -108,8 +110,5 @@ public class ProductServiceImpl implements ProductService {
         }
         return productID;
     }
-
-
-
 
 }

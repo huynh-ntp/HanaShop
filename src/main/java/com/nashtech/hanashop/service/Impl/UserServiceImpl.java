@@ -31,16 +31,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDTO createUser(UserDTO userDTO){
-        if(userRepo.existsByUserName(userDTO.getUserName())){
-            return null;
-        }
-        UserEntity entity = UserMapper.parseDTOToEntity(userDTO);
-        userRepo.save(entity);
-        return UserMapper.parseEntityToDTO(entity);
-    }
-
-    @Override
     public String deleteUser(String userName){
         UserEntity entity = userRepo.findByUserName(userName);
         if(entity!=null){
