@@ -19,7 +19,7 @@ public class OrderDetailMapper {
 
     public static OrderDetailEntity parseDTOToEntity(OrderDetailDTO dto ){
         OrderDetailEntity entity = new OrderDetailEntity();
-        entity.setDetailID(entity.getDetailID());
+        entity.setDetailID(dto.getDetailID());
         OrderEntity order = new OrderEntity();
         order.setOrderID(dto.getOrderID());
         ProductEntity product = new ProductEntity();

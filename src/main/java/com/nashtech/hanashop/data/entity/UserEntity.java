@@ -33,4 +33,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<RateEntity> listOfRates;
 
+    @OneToOne(mappedBy = "user")
+    private CustomerEntity customerEntity;
+
 }

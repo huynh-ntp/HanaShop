@@ -19,7 +19,6 @@ public class ProductController {
 
 
     @GetMapping()
-//    @PreAuthorize("hasAnyRole('CUS','AD')")
     public ResponseEntity getAll(){
         List<ProductDTO> listProduct = productService.getAll();
         return ResponseEntity.ok(listProduct);
@@ -32,6 +31,17 @@ public class ProductController {
             return ResponseEntity.ok("Don't have any product");
         }
         return ResponseEntity.ok(listProduct);
+    }
+
+    @GetMapping("/id/{productID}")
+    public ResponseEntity<?> findByProductID(@PathVariable("productID") String productID){
+        ProductDTO product = productService.findByProductID(productID);
+        if(product!=null){
+            return ResponseEntity
+                    .ok()
+                    .body(product);
+        }
+        return null;
     }
 
     @GetMapping("/category/{categoryID}")
@@ -74,6 +84,11 @@ public class ProductController {
                     .body(error);
         }
         ProductDTO newProduct = productService.updateProduct(dto);
+        if(newProduct==null){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Product not exist");
+        }
         return ResponseEntity.ok(newProduct);
     }
 

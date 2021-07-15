@@ -57,6 +57,9 @@ public class ProductServiceImpl implements ProductService {
         return "Delete product failed, product not found";
     }
     public ProductDTO updateProduct(ProductDTO dto){
+        if(productRepo.findByProductID(dto.getProductID())==null){
+            return null;
+        }
         Date date = new Date();
         dto.setUpdateDate(date);
         ProductEntity entity = mapper.parseDTOToEntity(dto);

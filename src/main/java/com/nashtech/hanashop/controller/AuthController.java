@@ -1,9 +1,13 @@
 package com.nashtech.hanashop.controller;
 
+import com.nashtech.hanashop.data.dto.CustomerDTO;
 import com.nashtech.hanashop.data.dto.ErrorRegisterDTO;
 import com.nashtech.hanashop.data.dto.UserDTO;
+import com.nashtech.hanashop.data.mapper.CustomerMapper;
+import com.nashtech.hanashop.data.mapper.ProductMapper;
 import com.nashtech.hanashop.data.mapper.UserMapper;
 import com.nashtech.hanashop.payload.response.JwtResponse;
+import com.nashtech.hanashop.repository.CustomerRepository;
 import com.nashtech.hanashop.repository.UserRepository;
 import com.nashtech.hanashop.security.jwt.JwtUtils;
 import com.nashtech.hanashop.security.services.UserDetailsImpl;
@@ -26,6 +30,7 @@ import java.util.stream.Collectors;
 @RestController
 public class AuthController {
 
+    final private CustomerRepository customerRepository;
 
     final private AuthenticationManager authenticationManager;
 
@@ -36,8 +41,9 @@ public class AuthController {
 
     final private JwtUtils jwtUtils;
 
-    public AuthController (AuthenticationManager authenticationManager, UserRepository userRepository,
-                            PasswordEncoder encoder, JwtUtils jwtUtils) {
+    public AuthController(CustomerRepository customerRepository, AuthenticationManager authenticationManager, UserRepository userRepository,
+                          PasswordEncoder encoder, JwtUtils jwtUtils) {
+        this.customerRepository = customerRepository;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.encoder = encoder;
@@ -107,7 +113,9 @@ public class AuthController {
         user.setRoleID("CUS");
         user.setFullName(userDTO.getFullName());
         user.setStatus(true);
-
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setUserName(userDTO.getUserName());
+        customerRepository.save(CustomerMapper.parseDTOToEntity(customerDTO));
         userRepository.save(UserMapper.parseDTOToEntity(user));
         return ResponseEntity.ok(user);
     }
