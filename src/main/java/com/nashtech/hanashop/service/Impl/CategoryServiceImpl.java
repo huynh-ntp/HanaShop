@@ -23,4 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
         });
         return listCateDTO;
     }
+
+    @Override
+    public CategoryDTO create(CategoryDTO categoryDTO) {
+        if(categoryRepo.existsByCategoryID(categoryDTO.getCategoryID().trim())){
+            return null;
+        }
+        categoryRepo.save(CategoryMapper.parseDTOToEntity(categoryDTO));
+        return categoryDTO;
+    }
 }

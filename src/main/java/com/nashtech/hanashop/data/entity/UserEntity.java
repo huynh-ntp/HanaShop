@@ -17,12 +17,13 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-
+    @Column(columnDefinition = "TEXT")
     private String fullName;
 
     @ManyToOne
     @JoinColumn(name = "roleID")
     private RoleEntity role;
+
 
     private String email;
 

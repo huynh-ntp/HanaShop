@@ -16,6 +16,7 @@ public class CustomerEntity {
     private UserEntity user;
 
     private String phone;
+    @Column(columnDefinition = "TEXT")
     private String address;
 
 }

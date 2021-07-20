@@ -27,7 +27,7 @@ public class OrderEntity {
     private UserEntity user ;
 
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<OrderDetailEntity> listOrderDetails;
 
 }

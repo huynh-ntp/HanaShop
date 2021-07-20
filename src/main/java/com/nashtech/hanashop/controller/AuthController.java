@@ -4,7 +4,6 @@ import com.nashtech.hanashop.data.dto.CustomerDTO;
 import com.nashtech.hanashop.data.dto.ErrorRegisterDTO;
 import com.nashtech.hanashop.data.dto.UserDTO;
 import com.nashtech.hanashop.data.mapper.CustomerMapper;
-import com.nashtech.hanashop.data.mapper.ProductMapper;
 import com.nashtech.hanashop.data.mapper.UserMapper;
 import com.nashtech.hanashop.payload.response.JwtResponse;
 import com.nashtech.hanashop.repository.CustomerRepository;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/account")
 @RestController
 public class AuthController {
@@ -50,42 +49,27 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
-
-
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody UserDTO user) {
-
-        // TODO, authenticate when login
-        // Username, pass from client
-        // com.nashtech.rookies.security.WebSecurityConfig.configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
-//        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        // on this step, we tell to authenticationManager how we load data from database
-        // and the password encoder
-
         if(user.getUserName()==null || user.getUserName().trim().isEmpty()
                 || user.getPassword()==null
                 || user.getPassword().trim().isEmpty()
         ) return ResponseEntity.badRequest().body("Error: Username and password must be fill");
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
-
-        // if go there, the user/password is correct
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        // generate jwt to return to client
-
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
                 userDetails.getUsername(),
+                userDetails.getFullName(),
                 userDetails.getEmail(),
-                roles
+                roles.get(0)
         ));
     }
 
@@ -99,8 +83,8 @@ public class AuthController {
                     .badRequest()
                     .body(error);
         }
-
-        if (userRepository.existsByUserName(userDTO.getUserName())) {
+        String userName = userDTO.getUserName();
+        if (userRepository.existsByUserName(userName)) {
             error.setUserNameError("Error: Username is already taken!");
             return ResponseEntity
                     .badRequest()
@@ -115,9 +99,10 @@ public class AuthController {
         user.setStatus(true);
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setUserName(userDTO.getUserName());
-        customerRepository.save(CustomerMapper.parseDTOToEntity(customerDTO));
         userRepository.save(UserMapper.parseDTOToEntity(user));
+        customerRepository.save(CustomerMapper.parseDTOToEntity(customerDTO));
         return ResponseEntity.ok(user);
+
     }
 
     private ErrorRegisterDTO validData(UserDTO dto){

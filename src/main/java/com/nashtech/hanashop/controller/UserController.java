@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping()
     @PreAuthorize("hasRole('AD')")
-    public ResponseEntity getAll(){
+    public ResponseEntity<?> getAll(){
      List<UserDTO> listUsers = userService.getAll();
      return ResponseEntity.ok(listUsers);
     }

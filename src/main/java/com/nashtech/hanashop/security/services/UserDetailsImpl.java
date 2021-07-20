@@ -9,13 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
-
-
 
     private String username;
 
@@ -24,13 +20,16 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private String fullName;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           String fullName, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.fullName = fullName;
         this.authorities = authorities;
     }
 
@@ -48,15 +47,14 @@ public class UserDetailsImpl implements UserDetails {
             user.getUserName(),
             user.getEmail(),
             user.getPassword(),
-            authorities);
+                user.getFullName()
+                , authorities);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
-
 
     public String getEmail() {
         return email;
@@ -92,7 +90,11 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-//    @Override
+    public String getFullName() {
+        return fullName;
+    }
+
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o)
 //            return true;

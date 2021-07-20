@@ -41,14 +41,14 @@ public class ProductController {
                     .ok()
                     .body(product);
         }
-        return null;
+        return ResponseEntity.badRequest().body("Don't have any product");
     }
 
     @GetMapping("/category/{categoryID}")
     public ResponseEntity<?> findByCategory(@PathVariable("categoryID") String categoryID){
         List<ProductDTO> listProduct = productService.findByCategory(categoryID);
         if(listProduct.size()==0){
-            return ResponseEntity.ok("Don't have any product");
+            return ResponseEntity.badRequest().body("Don't have any product");
         }
         return ResponseEntity.ok(listProduct);
     }
@@ -57,7 +57,7 @@ public class ProductController {
     @PreAuthorize("hasRole('AD')")
     public ResponseEntity createProduct(@RequestBody ProductDTO dto){
         ErrorProductDTO error = validData(dto,"create");
-        if(checkError(error)){
+        if(isError(error)){
             return ResponseEntity
                     .badRequest()
                     .body(error);
@@ -69,16 +69,21 @@ public class ProductController {
 
     @DeleteMapping("/{productID}")
     @PreAuthorize("hasRole('AD')")
-    public ResponseEntity deleteProduct(@PathVariable String productID){
+    public ResponseEntity<?> deleteProduct(@PathVariable String productID){
         String status = productService.deleteProduct(productID);
-        return ResponseEntity.ok(status);
+
+        if(status.equals("Delete product success")){
+            return ResponseEntity.ok(status);
+        }
+        return ResponseEntity.badRequest().body(status);
+
     }
 
     @PutMapping()
     @PreAuthorize("hasRole('AD')")
     public ResponseEntity updateProduct(@RequestBody ProductDTO dto){
         ErrorProductDTO error = validData(dto,"update");
-        if(checkError(error)){
+        if(isError(error)){
             return ResponseEntity
                     .badRequest()
                     .body(error);
@@ -92,7 +97,7 @@ public class ProductController {
         return ResponseEntity.ok(newProduct);
     }
 
-    private boolean checkError (ErrorProductDTO error){
+    private boolean isError(ErrorProductDTO error){
         if(!error.getProductIDError().isEmpty() || !error.getProductNameError().isEmpty()
                 || !error.getPriceError().isEmpty() || !error.getDescriptionError().isEmpty()
                 || !error.getQuantityError().isEmpty() || !error.getImageSrcError().isEmpty()
@@ -111,7 +116,7 @@ public class ProductController {
             }
         }
         if(dto.getProductName()==null || dto.getProductName().trim().isEmpty()){
-            error.setProductNameError("Product is not blank");
+            error.setProductNameError("Product name is not blank");
 
         }
         if(dto.getImageSrc()==null || dto.getImageSrc().trim().isEmpty()){

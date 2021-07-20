@@ -23,7 +23,7 @@ public class RateEntity {
     @Column(name = "numOfStar")
     private Integer numOfStar;
 
-    @Column(name = "description")
+    @Column(name = "description" ,columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "dateRate")

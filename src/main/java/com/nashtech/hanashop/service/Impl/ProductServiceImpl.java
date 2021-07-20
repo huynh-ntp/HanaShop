@@ -95,9 +95,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO findByProductID(String productID) {
-        ProductDTO product = mapper.parseEntityToDTO(
-                productRepo.findByProductID(productID));
-        return product;
+        ProductEntity entity = productRepo.findByProductID(productID);
+        if(entity!=null){
+            return mapper.parseEntityToDTO(entity);
+        }
+        return null;
+
     }
 
 

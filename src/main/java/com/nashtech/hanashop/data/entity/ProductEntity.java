@@ -14,13 +14,13 @@ public class ProductEntity {
     @Id
     private String productID;
 
-    @Column(name = "productName")
+    @Column(name = "productName", columnDefinition = "TEXT")
     private String productName;
 
-    @Column(name = "imageSrc")
+    @Column(name = "imageSrc", columnDefinition = "TEXT")
     private String imageSrc;
 
-    @Column(name = "desscription")
+    @Column(name = "desscription",columnDefinition = "TEXT")
     private String desscription;
 
     @Column(name = "price")
@@ -43,10 +43,10 @@ public class ProductEntity {
     @JoinColumn(name = "categoryID")
     private CategoryEntity category;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetailEntity> listOrderDetails;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RateEntity> listOfRates;
 
 
