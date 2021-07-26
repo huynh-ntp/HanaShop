@@ -23,6 +23,17 @@ public class CategoryController {
         return ResponseEntity.ok(listCategory);
     }
 
+    @GetMapping("/{categoryID}")
+    public ResponseEntity<?> getByCategoryID(@PathVariable("categoryID") String categoryID){
+        CategoryDTO cate = categoryService.findByCategoryID(categoryID);
+        if(cate==null){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Category not found");
+        }
+        return  ResponseEntity.ok(cate);
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('AD')")
     public ResponseEntity<?> create(@RequestBody CategoryDTO cate){
@@ -36,7 +47,39 @@ public class CategoryController {
             return ResponseEntity.badRequest().body(error);
         }
         return ResponseEntity.ok(cateDTO);
+    }
 
+    @PutMapping
+    @PreAuthorize("hasRole('AD')")
+    public ResponseEntity<?> update(@RequestBody CategoryDTO cate){
+        ErrorCategoryDTO error = checkValid(cate);
+        if(isError(error)){
+            return ResponseEntity.badRequest().body(error);
+        }
+        CategoryDTO cateDTO = categoryService.update(cate);
+        if(cateDTO==null){
+            error.setCategoryIDError("Category ID not found!");
+            return ResponseEntity.badRequest().body(error);
+        }
+        return ResponseEntity.ok(cateDTO);
+    }
+
+    @DeleteMapping("/{categoryID}")
+    @PreAuthorize("hasRole('AD')")
+    public ResponseEntity<?> delete(@PathVariable("categoryID") String categoryID){
+        CategoryDTO cate = categoryService.findByCategoryID(categoryID);
+        if(cate==null){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Category not found");
+        }
+        String messageDelete = categoryService.delete(categoryID);
+        if(messageDelete.equals("Can not delete category!")){
+            return ResponseEntity
+                    .badRequest()
+                    .body(messageDelete);
+        }
+        return  ResponseEntity.ok(messageDelete);
     }
 
     private boolean isError(ErrorCategoryDTO error){

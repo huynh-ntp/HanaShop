@@ -28,7 +28,8 @@ public class ProductController {
     public ResponseEntity<?> findByName(@PathVariable("productName") String productName){
         List<ProductDTO> listProduct = productService.findByName(productName);
         if(listProduct.size()==0){
-            return ResponseEntity.ok("Don't have any product");
+            return ResponseEntity
+                    .badRequest().body("Don't have any product");
         }
         return ResponseEntity.ok(listProduct);
     }
@@ -96,6 +97,21 @@ public class ProductController {
         }
         return ResponseEntity.ok(newProduct);
     }
+    @GetMapping("/{productName}/{category}")
+    public ResponseEntity<?> getByNameAndCategory(@PathVariable("productName") String productName,@PathVariable("category") String category){
+        if(productName.equals("no")){
+            productName="";
+        }
+        List<ProductDTO> listProduct = productService.findByNameAndCategory(productName,
+                category);
+        if(listProduct.size()==0){
+            return ResponseEntity.
+                    badRequest().body("Don't have any product");
+        }
+        return ResponseEntity.ok(listProduct);
+    }
+
+
 
     private boolean isError(ErrorProductDTO error){
         if(!error.getProductIDError().isEmpty() || !error.getProductNameError().isEmpty()

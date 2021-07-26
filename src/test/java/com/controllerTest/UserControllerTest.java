@@ -6,52 +6,52 @@ import com.nashtech.hanashop.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-@WebMvcTest(UserController.class)
-@RunWith(SpringRunner.class)
-@ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+//@WebMvcTest(UserController.class)
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
-    private UserService userService = Mockito.mock(UserService.class);
+    @Mock
+    private UserService userService;
 
-    private List<UserDTO> list = new ArrayList<>();
-    UserDTO user = new UserDTO();
+    private List<UserDTO> userList;
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this);
-
-        list.add(user);
+      userList = Arrays.asList(new UserDTO(),new UserDTO(),new UserDTO());
     }
 
     @Test
-    public void getAll_ReturnStatus200AndJsonArray() throws Exception{
-        Mockito.when(userService.getAll()).thenReturn(list);
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/user");
-        MvcResult result = mvc.perform(request).andReturn();
-        Assertions.assertEquals(200,result.getResponse().getStatus());
+    @WithMockUser(username="phihuynh")
+    public void getAll_ReturnUserList() throws Exception{
+        Mockito.when(userService.getAll()).thenReturn(userList);
+        mockMvc.perform(get("/api/user").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
+
 
 }

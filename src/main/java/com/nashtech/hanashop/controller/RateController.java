@@ -17,14 +17,14 @@ public class RateController  {
     @Autowired
     RateService rateService;
 
-
     @GetMapping("/{productID}")
     public ResponseEntity getByProduct(@PathVariable String productID){
         List<RateDTO> listRate = rateService.findByProductID(productID);
         if(listRate.size()>0){
             return ResponseEntity.ok(listRate);
         }
-        return ResponseEntity.ok("Don't have any rate for this product");
+        return ResponseEntity
+                .badRequest().body("Don't have any rate for this product");
     }
 
     @PostMapping("/user/rating")

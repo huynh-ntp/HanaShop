@@ -27,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ProductRepository productRepository;
 
+    private final float TAX = 0.05f;
+    private final float SHIPPING = 2f;
     @Override
     public List<OrderDTO>  getAllOrderByUser(String userName){
         List<OrderDTO> listOrder = new ArrayList<>();
@@ -60,8 +62,8 @@ public class OrderServiceImpl implements OrderService {
         order.setAddress(address);
         orderRepo.save(OrderMapper.parseDTOToEntity(order));
         //
-        for(Map.Entry entry: cart.getCart().entrySet()){
-            ProductDTO productBuy =(ProductDTO) entry.getValue();
+        for(int i=0;i<cart.getCart().size();i++){
+            ProductDTO productBuy = cart.getCart().get(i);
             OrderDetailDTO detail = new OrderDetailDTO();
             detail.setOrderID(orderID);
             detail.setPrice(productBuy.getPrice()* productBuy.getQuantity());
@@ -74,16 +76,20 @@ public class OrderServiceImpl implements OrderService {
             entity.setQuantity(quantityRemain);
             productRepository.save(entity);
         }
+
+
         return order;
 
     }
 
     private float getTotal(CartDTO cart){
         float total = 0;
-        for(Map.Entry entry: cart.getCart().entrySet()){
-            ProductDTO productBuy =(ProductDTO) entry.getValue();
+        for(int i =0;i<cart.getCart().size();i++){
+            ProductDTO productBuy =cart.getCart().get(i);
             total += productBuy.getQuantity() * productBuy.getPrice();
         }
+
+
         return total;
     }
 

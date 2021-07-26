@@ -1,5 +1,6 @@
 package com.nashtech.hanashop.service.Impl;
 
+import com.nashtech.hanashop.data.dto.PasswordChangeDTO;
 import com.nashtech.hanashop.data.dto.UserDTO;
 import com.nashtech.hanashop.data.entity.UserEntity;
 import com.nashtech.hanashop.data.mapper.UserMapper;
@@ -47,6 +48,19 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
+    @Override
+    public UserDTO getUser(String userName) {
+        UserEntity userEntity = userRepo.findByUserName(userName);
+        if(userEntity!=null){
+            return UserMapper.parseEntityToDTO(userEntity);
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO changePassword(PasswordChangeDTO dto) {
+        return null;
+    }
 
 
 }

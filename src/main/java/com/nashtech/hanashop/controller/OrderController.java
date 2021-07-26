@@ -54,12 +54,12 @@ public class OrderController {
     // Check quantity remain
     private List<String> checkAvaiable(CartDTO cart){
         List<String> list = new ArrayList<>();
-        for(Map.Entry entry: cart.getCart().entrySet()){
-            ProductDTO product = productService.findByProductID((String)entry.getKey());
+        for(int i=0;i<cart.getCart().size();i++){
+            ProductDTO product = productService.findByProductID(cart.getCart().get(i).getProductID());
             int remain = product.getQuantity();
-            ProductDTO productBuy =(ProductDTO) entry.getValue();
+            ProductDTO productBuy = cart.getCart().get(i);
             if(remain<productBuy.getQuantity()){
-                list.add((String)entry.getKey()+ " don't have enough product!" );
+                list.add(cart.getCart().get(i).getProductName()+ " don't have enough amount! Just " +remain+" product left!" );
             }
         }
         return list;

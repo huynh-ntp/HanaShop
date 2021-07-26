@@ -8,4 +8,7 @@ import java.util.List;
 public interface CategoryService  {
     List<CategoryDTO> getAll();
     CategoryDTO create(CategoryDTO categoryDTO);
+    CategoryDTO update(CategoryDTO categoryDTO);
+    CategoryDTO findByCategoryID(String categoryID);
+    String delete(String categoryID);
 }

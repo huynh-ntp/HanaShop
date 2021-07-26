@@ -74,10 +74,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
             .authorizeRequests().antMatchers("/account/**").permitAll()
                 .and().authorizeRequests().antMatchers("/category").permitAll()
 
             .antMatchers("/user/**").permitAll()
+                .antMatchers("/rate/**").permitAll()
                 .antMatchers("/product/**").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated();

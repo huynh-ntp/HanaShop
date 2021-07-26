@@ -103,6 +103,23 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public List<ProductDTO> findByNameAndCategory(String name, String categoryID) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setCategoryID(categoryID);
+        System.out.println(name);
+        System.out.println(categoryID);
+        List<ProductEntity> listEntity = productRepo.findByProductNameContainsAndCategory
+                (name,CategoryMapper.parseDTOToEntity(categoryDTO));
+        List<ProductDTO> listDto = new ArrayList<>();
+        if(listEntity!=null){
+            listEntity.forEach(entity -> {
+                listDto.add(mapper.parseEntityToDTO(entity));
+            });
+        }
+        return listDto;
+    }
+
 
     private String randomProductID(ProductDTO dto){
         Random random = new Random();

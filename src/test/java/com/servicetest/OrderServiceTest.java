@@ -32,7 +32,7 @@ public class OrderServiceTest {
 
     private List<OrderEntity> orderEntityList = new ArrayList<>();
     OrderEntity orderEntity = new OrderEntity();
-    private Map<String, ProductDTO> cart = new HashMap<>();
+    private List<ProductDTO> cart = new ArrayList<>();
     private CartDTO cartDTO = new CartDTO();
     @Before
     public void init() {
